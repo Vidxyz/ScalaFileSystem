@@ -40,7 +40,33 @@ class Cd(dir: String) extends Command {
 
 
   // Need to collapse relative tokens
+  // ...
+  // for example, absPath = /a/b/c
   def doFindEntry(root: Directory, absPath: String): DirEntry = {
+
+    // Example argument trace
+    /*
+    Example filesystem
+    ---------
+    a/
+      d/
+      e/
+        g/
+        h/
+      b/
+        c/
+          c1/
+          c2/
+      f/
+
+     i/
+     j/
+     k/
+     ----------
+     */
+    // Incoming command = cd /a/b/c
+    // cD = "/" , path = ["a", "b", "c"]
+    //
 
     @tailrec
     def findEntryHelper(currentDirectory: Directory, path: List[String]): DirEntry = {
@@ -69,10 +95,10 @@ class Cd(dir: String) extends Command {
     // This list will contain all the . and ..'s
     //  1.1 - Eliminate/Collapse relative tokens
     val newTokens = collapseRelativeTokens(tokens, List())
-    if (newTokens == null) null
 
+    if (newTokens == null) null
     // 2. Navigate to the correct entry
-    else  findEntryHelper(root, newTokens)
+    else findEntryHelper(root, newTokens)
 
   }
 
