@@ -38,6 +38,8 @@ class Cd(dir: String) extends Command {
 
   }
 
+
+  // Need to collapse relative tokens
   def doFindEntry(root: Directory, absPath: String): DirEntry = {
 
     @tailrec
@@ -51,11 +53,27 @@ class Cd(dir: String) extends Command {
       }
     }
 
+    @tailrec
+    def collapseRelativeTokens(path: List[String], result: List[String]): List[String] = {
+      if(path.isEmpty) result
+      else if (".".equals(path.head)) collapseRelativeTokens(path.tail, result)
+      else if ("..".equals(path.head)) {
+        if(result.isEmpty) null
+        else collapseRelativeTokens(path.tail, result.init)
+      }
+      else collapseRelativeTokens(path.tail, result :+ path.head)
+    }
+
     // 1. Tokens
     val tokens: List[String] = absPath.substring(1).split(Directory.SEPARATOR).toList
+    // This list will contain all the . and ..'s
+    //  1.1 - Eliminate/Collapse relative tokens
+    val newTokens = collapseRelativeTokens(tokens, List())
+    if (newTokens == null) null
 
     // 2. Navigate to the correct entry
-    findEntryHelper(root, tokens)
+    else  findEntryHelper(root, newTokens)
+
   }
 
 }
