@@ -1,0 +1,4 @@
+# GitIgnore
+
+.idea
+.DS_Store
