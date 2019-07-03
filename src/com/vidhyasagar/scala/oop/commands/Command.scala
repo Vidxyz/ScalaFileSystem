@@ -31,6 +31,9 @@ object Command {
   def from(input: String): Command = {
     val tokens: Array[String] = input.split(" ")
 
+
+    // CAN REDUCE CLUTTER BY USING CASE MATCHES. FUTURE ENHANCEMENT
+    //---
     if (input.isEmpty() ||  tokens.isEmpty) emptyCommand()
     else if (MKDIR.equals(tokens(0))) {
       if(tokens.length < 2) incompleteCommand(MKDIR)

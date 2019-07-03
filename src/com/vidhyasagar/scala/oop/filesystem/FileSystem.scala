@@ -19,5 +19,14 @@ object FileSystem extends App {
 
   }
 
+  /* ELEGENT FUNCTIONAL WAY TO HANDLE STATEFUL APPLICATIONS
+
+  io.Source.stdin.getLines().foldLeft(State(root, root)) ((currentState, newLine) => {
+    currentState.show()
+    Command.from(newLine).apply(currentState)
+  })
+
+   */
+
 
 }
